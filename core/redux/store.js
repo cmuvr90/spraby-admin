@@ -3,6 +3,8 @@ import {combineReducers} from 'redux';
 import think from 'redux-thunk';
 import {indexReducer} from './reducers/indexReducer';
 import {layoutReducer} from './reducers/layoutReducer';
+import { composeWithDevTools } from '@redux-devtools/extension';
+
 
 /**
  *
@@ -13,4 +15,4 @@ const rootReducer = combineReducers({
   layout: layoutReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(think));
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(think)));

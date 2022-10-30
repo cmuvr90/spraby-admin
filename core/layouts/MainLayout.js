@@ -1,14 +1,15 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     Frame,
     ContextualSaveBar,
     Loading,
     Toast,
-    Modal
+    Modal,
 } from '@shopify/polaris'
 import { TopBarMarkup } from '../../components/TopBarMarkup'
 import { NavigationMarkup } from '../../components/NavigationMarkup'
+import { onLoading, onMessage, onLoadModal } from '../redux/actions/layoutActions'
 
 /**
  *
@@ -16,16 +17,36 @@ import { NavigationMarkup } from '../../components/NavigationMarkup'
  * @returns
  */
 export const MainLayout = Template => props => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
-    const loading = useSelector(state => state.layout.loading);
-    const message = useSelector(state => state.layout.message);
-    const modal = useSelector(state => state.layout.modal);
-    const topBar = useSelector(state => state.layout.topBar);
+    const loading = useSelector(state => state.layout.loading)
+    const message = useSelector(state => state.layout.message)
+    const modal = useSelector(state => state.layout.modal)
+    const topBar = useSelector(state => state.layout.topBar)
+
+    const loadingMarkup = loading ? <Loading /> : null
+
+    const toastMarkup = useMemo(() => {
+        return message ? message.content.map(i =>
+            <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onMessage())} />,
+        ) : null
+    }, [message])
 
 
-
-
+    /**
+     *
+     */
+    const modalMarkup = <Modal
+        large={modal.large}
+        open={modal.open}
+        onClose={() => dispatch(onLoadModal())}
+        title={modal.title}
+        primaryAction={modal.primaryAction}
+        secondaryActions={modal.secondaryActions}
+        loading={modal.loading}
+    >
+        <Modal.Section>{modal.content}</Modal.Section>
+    </Modal>
 
 
     const defaultState = useRef({
@@ -37,20 +58,20 @@ export const MainLayout = Template => props => {
     const skipToContentRef = useRef(null)
     const [isDirty, setIsDirty] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(false)
 
-    const [supportSubject, setSupportSubject] = useState('');
-    const [supportMessage, setSupportMessage] = useState('');
+    const [supportSubject, setSupportSubject] = useState('')
+    const [supportMessage, setSupportMessage] = useState('')
 
 
     const handleSubjectChange = useCallback(
         (value) => setSupportSubject(value),
         [],
-    );
+    )
     const handleMessageChange = useCallback(
         (value) => setSupportMessage(value),
         [],
-    );
+    )
 
     const [nameFieldValue, setNameFieldValue] = useState(
         defaultState.current.nameFieldValue,
@@ -64,16 +85,14 @@ export const MainLayout = Template => props => {
     const toggleToastActive = useCallback(
         () => setToastActive((toastActive) => !toastActive),
         [],
-    );
+    )
 
     const toggleModalActive = useCallback(
         () => setModalActive((modalActive) => !modalActive),
         [],
-    );
+    )
 
     const [toastActive, setToastActive] = useState(false)
-
-    const loadingMarkup = isLoading ? <Loading /> : null
 
 
     const toggleMobileNavigationActive = useCallback(
@@ -108,10 +127,6 @@ export const MainLayout = Template => props => {
     }, [])
 
 
-    const toastMarkup = toastActive ? (
-        <Toast onDismiss={toggleToastActive} content="Changes saved" />
-    ) : null;
-
     const contextualSaveBarMarkup = isDirty ? (
         <ContextualSaveBar
             message='Unsaved changes'
@@ -124,20 +139,7 @@ export const MainLayout = Template => props => {
         />
     ) : null
 
-    const modalMarkup = (
-        <Modal
-            open={modalActive}
-            onClose={toggleModalActive}
-            title="Contact support"
-            primaryAction={{
-                content: 'Send',
-                onAction: toggleModalActive,
-            }}
-        >
-            <Modal.Section>
-            </Modal.Section>
-        </Modal>
-    );
+    const onClick = value => dispatch(onLoading(value))
 
     return <Frame
         logo={logo}

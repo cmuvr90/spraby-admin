@@ -1,6 +1,7 @@
 export const ON_LOADING = 'ON_LOADING'
 export const ON_MESSAGE = 'ON_MESSAGE'
-export const ON_MODAL = 'ON_MODAL'
+export const ON_LOAD_MODAL = 'ON_LOAD_MODAL'
+export const ON_CHANGE_MODAL = 'ON_CHANGE_MODAL'
 export const ON_TOP_BAR = 'ON_TOP_BAR'
 
 /**
@@ -23,7 +24,7 @@ export const onLoading = (state = true) => ({
 export const onMessage = (message = null, error = false, duration = 3000) => ({
     type: ON_MESSAGE,
     payload: message ? {
-        content: Array.isArray(message) ? message : [message],
+        content: Array.isArray(message) ? message.reverse() : [message],
         error: error,
         duration: duration,
     } : null,
@@ -34,8 +35,8 @@ export const onMessage = (message = null, error = false, duration = 3000) => ({
  * @param params
  * @returns {{payload: {secondaryActions: [], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}}
  */
-export const onModal = (params = {}) => ({
-    type: ON_MODAL,
+export const onLoadModal = (params = {}) => ({
+    type: ON_LOAD_MODAL,
     payload: {
         large: false,
         open: false,
@@ -47,6 +48,16 @@ export const onModal = (params = {}) => ({
         onClose: () => {},
         ...params,
     },
+})
+
+/**
+ *
+ * @param params
+ * @returns {{payload: {}, type: string}}
+ */
+export const onChangeModal = (params = {}) => ({
+    type: ON_CHANGE_MODAL,
+    payload: { ...params },
 })
 
 /**
