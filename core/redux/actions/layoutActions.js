@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const ON_LOADING = 'ON_LOADING'
 export const ON_MESSAGE = 'ON_MESSAGE'
 export const ON_LOAD_MODAL = 'ON_LOAD_MODAL'
@@ -63,7 +65,7 @@ export const onChangeModal = (params = {}) => ({
 /**
  *
  * @param params
- * @returns {{payload: ({}&{discardAction: null, saveAction: null, active: boolean, title: null}), type: string}}
+ * @returns {{payload: {discardAction: null, fullWidth: boolean, saveAction: null, secondaryMenu: null, active: boolean, alignContentFlush: boolean, title: null, contextControl: null}, type: string}}
  */
 export const onTopBar = (params = {}) => ({
     type: ON_TOP_BAR,
@@ -72,6 +74,10 @@ export const onTopBar = (params = {}) => ({
         title: null,
         saveAction: null,
         discardAction: null,
+        alignContentFlush: false,
+        fullWidth: true,
+        contextControl: null,
+        secondaryMenu: null,
         ...params,
     },
 })

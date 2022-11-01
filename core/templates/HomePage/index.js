@@ -10,7 +10,7 @@ export const HomePage = () => {
     const [modalData, setModalData] = useState({ name: '', email: '' })
 
     useEffect(() => {
-        modal.change({ content: modalContent })
+        modal.setContent(modalContent)
     }, [modalData])
 
     const onChangeModalData = value => setModalData(i => ({ ...i, ...value }))
@@ -38,7 +38,7 @@ export const HomePage = () => {
         primaryAction: {
             content: 'Close',
             onAction: () => {
-                modal.primary.loading();
+                modal.primary.loading()
                 modal.setTitle('Closing...')
                 setTimeout(modal.close, 1000)
             },
@@ -100,6 +100,15 @@ export const HomePage = () => {
                     <Stack>
                         <Button
                             onClick={() => modal.load(defaultModalSettings)}
+                        >Info</Button>
+                    </Stack>
+                </Card>
+            </Layout.AnnotatedSection>
+            <Layout.AnnotatedSection title='Save bar'>
+                <Card sectioned>
+                    <Stack>
+                        <Button onClick={() => {
+                        }}
                         >Info</Button>
                     </Stack>
                 </Card>

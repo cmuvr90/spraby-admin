@@ -9,7 +9,7 @@ import {
 } from '@shopify/polaris'
 import { TopBarMarkup } from '../../components/TopBarMarkup'
 import { NavigationMarkup } from '../../components/NavigationMarkup'
-import { onLoading, onMessage, onLoadModal } from '../redux/actions/layoutActions'
+import { onMessage, onLoadModal } from '../redux/actions/layoutActions'
 
 /**
  *
@@ -26,16 +26,10 @@ export const MainLayout = Template => props => {
 
     const loadingMarkup = loading ? <Loading /> : null
 
-    const toastMarkup = useMemo(() => {
-        return message ? message.content.map(i =>
-            <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onMessage())} />,
-        ) : null
-    }, [message])
+    const toastMarkup = useMemo(() => message ? message.content.map(i =>
+        <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onMessage())} />,
+    ) : null, [message])
 
-
-    /**
-     *
-     */
     const modalMarkup = <Modal
         large={modal.large}
         open={modal.open}
@@ -48,60 +42,19 @@ export const MainLayout = Template => props => {
         <Modal.Section>{modal.content}</Modal.Section>
     </Modal>
 
-
-    const defaultState = useRef({
-        emailFieldValue: 'dharma@jadedpixel.com',
-        nameFieldValue: 'Jaded Pixel',
-    })
+    const contextualSaveBarMarkup = topBar.active ? <ContextualSaveBar
+        message={topBar.title}
+        saveAction={topBar.saveAction}
+        discardAction={topBar.discardAction}
+        alignContentFlush={topBar.alignContentFlush}
+        fullWidth={topBar.fullWidth}
+        contextControl={topBar.contextControl}
+        secondaryMenu={topBar.secondaryMenu}
+    /> : null
 
     const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
     const skipToContentRef = useRef(null)
-    const [isDirty, setIsDirty] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [modalActive, setModalActive] = useState(false)
-
-    const [supportSubject, setSupportSubject] = useState('')
-    const [supportMessage, setSupportMessage] = useState('')
-
-
-    const handleSubjectChange = useCallback(
-        (value) => setSupportSubject(value),
-        [],
-    )
-    const handleMessageChange = useCallback(
-        (value) => setSupportMessage(value),
-        [],
-    )
-
-    const [nameFieldValue, setNameFieldValue] = useState(
-        defaultState.current.nameFieldValue,
-    )
-    const [emailFieldValue, setEmailFieldValue] = useState(
-        defaultState.current.emailFieldValue,
-    )
-    const [storeName, setStoreName] = useState(
-        defaultState.current.nameFieldValue,
-    )
-    const toggleToastActive = useCallback(
-        () => setToastActive((toastActive) => !toastActive),
-        [],
-    )
-
-    const toggleModalActive = useCallback(
-        () => setModalActive((modalActive) => !modalActive),
-        [],
-    )
-
-    const [toastActive, setToastActive] = useState(false)
-
-
-    const toggleMobileNavigationActive = useCallback(
-        () =>
-            setMobileNavigationActive(
-                (mobileNavigationActive) => !mobileNavigationActive,
-            ),
-        [],
-    )
+    const toggleMobileNavigationActive = useCallback(() => setMobileNavigationActive((mobileNavigationActive) => !mobileNavigationActive), [])
 
     const logo = {
         width: 124,
@@ -110,36 +63,6 @@ export const MainLayout = Template => props => {
         url: 'http://jadedpixel.com',
         accessibilityLabel: 'Jaded Pixel',
     }
-
-    const handleSave = useCallback(() => {
-        defaultState.current.nameFieldValue = nameFieldValue
-        defaultState.current.emailFieldValue = emailFieldValue
-
-        setIsDirty(false)
-        setToastActive(true)
-        setStoreName(defaultState.current.nameFieldValue)
-    }, [emailFieldValue, nameFieldValue])
-
-    const handleDiscard = useCallback(() => {
-        setEmailFieldValue(defaultState.current.emailFieldValue)
-        setNameFieldValue(defaultState.current.nameFieldValue)
-        setIsDirty(false)
-    }, [])
-
-
-    const contextualSaveBarMarkup = isDirty ? (
-        <ContextualSaveBar
-            message='Unsaved changes'
-            saveAction={{
-                onAction: handleSave,
-            }}
-            discardAction={{
-                onAction: handleDiscard,
-            }}
-        />
-    ) : null
-
-    const onClick = value => dispatch(onLoading(value))
 
     return <Frame
         logo={logo}

@@ -53,6 +53,13 @@ export function useModal() {
 
     /**
      *
+     * @param value
+     * @returns {{payload: {}, type: string}}
+     */
+    const setContent = (value = '') => change({ content: value })
+
+    /**
+     *
      * @returns {{payload: {}, type: string}}
      */
     const loading = (value = true) => change({ loading: value })
@@ -131,6 +138,7 @@ export function useModal() {
         loading,
         unloading,
         setTitle,
+        setContent,
         primary: {
             current: settings.current.primaryAction,
             change: primaryChange,
