@@ -9,7 +9,7 @@ import {
 } from '@shopify/polaris'
 import { TopBarMarkup } from '../../components/TopBarMarkup'
 import { NavigationMarkup } from '../../components/NavigationMarkup'
-import { onMessage, onLoadModal } from '../redux/actions/layoutActions'
+import { onChangeMessage, onLoadModal } from '../redux/actions/layoutActions'
 
 /**
  *
@@ -27,7 +27,7 @@ export const MainLayout = Template => props => {
     const loadingMarkup = loading ? <Loading /> : null
 
     const toastMarkup = useMemo(() => message ? message.content.map(i =>
-        <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onMessage())} />,
+        <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onChangeMessage())} />,
     ) : null, [message])
 
     const modalMarkup = <Modal

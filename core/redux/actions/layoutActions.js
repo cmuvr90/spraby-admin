@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const ON_LOADING = 'ON_LOADING'
-export const ON_MESSAGE = 'ON_MESSAGE'
+export const ON_CHANGE_LOADING = 'ON_CHANGE_LOADING'
+export const ON_CHANGE_MESSAGE = 'ON_CHANGE_MESSAGE'
 
 export const ON_LOAD_MODAL = 'ON_LOAD_MODAL'
 export const ON_CHANGE_MODAL = 'ON_CHANGE_MODAL'
@@ -15,8 +15,8 @@ export const ON_CHANGE_TOP_BAR_SECONDARY_ACTION = 'ON_CHANGE_TOP_BAR_SECONDARY_A
  * @param state
  * @returns {{payload: boolean, type: string}}
  */
-export const onLoading = (state = true) => ({
-    type: ON_LOADING,
+export const onChangeLoading = (state = true) => ({
+    type: ON_CHANGE_LOADING,
     payload: state,
 })
 
@@ -27,8 +27,8 @@ export const onLoading = (state = true) => ({
  * @param duration
  * @returns {{payload: *, type: string}}
  */
-export const onMessage = (message = null, error = false, duration = 3000) => ({
-    type: ON_MESSAGE,
+export const onChangeMessage = (message = null, error = false, duration = 3000) => ({
+    type: ON_CHANGE_MESSAGE,
     payload: message ? {
         content: Array.isArray(message) ? message.reverse() : [message],
         error: error,

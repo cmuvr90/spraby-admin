@@ -1,4 +1,4 @@
-import { onMessage } from '../redux/actions/layoutActions'
+import { onChangeMessage } from '../redux/actions/layoutActions'
 import { useDispatch } from 'react-redux'
 
 /**
@@ -14,7 +14,7 @@ export function useMessage() {
      * @param duration
      * @returns {{payload: *, type: string}}
      */
-    const info = (value = '', duration = 3000) => dispatch(onMessage(value, false, duration))
+    const info = (value = '', duration = 3000) => dispatch(onChangeMessage(value, false, duration))
 
     /**
      *
@@ -22,13 +22,13 @@ export function useMessage() {
      * @param duration
      * @returns {{payload: *, type: string}}
      */
-    const error = (value = '', duration = 3000) => dispatch(onMessage(value, true, duration))
+    const error = (value = '', duration = 3000) => dispatch(onChangeMessage(value, true, duration))
 
     /**
      *
      * @returns {{payload: *, type: string}}
      */
-    const close = () => dispatch(onMessage())
+    const close = () => dispatch(onChangeMessage())
 
     return { info, error, close }
 }

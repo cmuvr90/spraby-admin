@@ -1,6 +1,6 @@
 import {
-    ON_LOADING,
-    ON_MESSAGE,
+    ON_CHANGE_LOADING,
+    ON_CHANGE_MESSAGE,
     ON_CHANGE_MODAL,
     ON_LOAD_MODAL,
     ON_CHANGE_TOP_BAR,
@@ -27,9 +27,9 @@ const initialState = {
  */
 export const layoutReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ON_LOADING:
+        case ON_CHANGE_LOADING:
             return { ...state, loading: action.payload }
-        case ON_MESSAGE:
+        case ON_CHANGE_MESSAGE:
             return { ...state, message: action.payload }
         case ON_LOAD_MODAL:
             return { ...state, modal: { ...action.payload } }

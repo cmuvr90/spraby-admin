@@ -1,4 +1,4 @@
-import { onLoading } from '../redux/actions/layoutActions'
+import { onChangeLoading } from '../redux/actions/layoutActions'
 import { useDispatch } from 'react-redux'
 
 /**
@@ -13,7 +13,7 @@ export function useLoading() {
      * @param value
      * @returns {{payload: boolean, type: string}}
      */
-    const start = (value = true) => dispatch(onLoading(value))
+    const start = (value = true) => dispatch(onChangeLoading(value))
 
     /**
      *
