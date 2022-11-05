@@ -1,8 +1,11 @@
 import {
     ON_CHANGE_LOADING,
     ON_CHANGE_MESSAGE,
+
     ON_CHANGE_MODAL,
-    ON_LOAD_MODAL,
+    ON_CHANGE_MODAL_PRIMARY_ACTION,
+    ON_CHANGE_MODAL_SECONDARY_ACTION,
+
     ON_CHANGE_TOP_BAR,
     ON_CHANGE_TOP_BAR_PRIMARY_ACTION,
     ON_CHANGE_TOP_BAR_SECONDARY_ACTION,
@@ -31,10 +34,28 @@ export const layoutReducer = (state = initialState, action) => {
             return { ...state, loading: action.payload }
         case ON_CHANGE_MESSAGE:
             return { ...state, message: action.payload }
-        case ON_LOAD_MODAL:
-            return { ...state, modal: { ...action.payload } }
         case ON_CHANGE_MODAL:
             return { ...state, modal: { ...state.modal, ...action.payload } }
+        case ON_CHANGE_MODAL_PRIMARY_ACTION:
+            return {
+                ...state,
+                modal: {
+                    ...state.modal,
+                    primaryAction: {
+                        ...state.modal.primaryAction,
+                        ...action.payload,
+                    },
+                },
+            }
+        case ON_CHANGE_MODAL_SECONDARY_ACTION:
+            return {
+                ...state,
+                modal: {
+                    ...state.modal,
+                    secondaryActions: state.modal.secondaryActions.map((i, index) =>
+                        index === action.payload.index - 1 ? { ...i, ...action.payload.value } : { ...i }),
+                },
+            }
         case ON_CHANGE_TOP_BAR:
             return { ...state, topBar: { ...state.topBar, ...action.payload } }
         case ON_CHANGE_TOP_BAR_PRIMARY_ACTION:

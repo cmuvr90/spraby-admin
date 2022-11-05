@@ -1,41 +1,23 @@
-import { onChangeModal, onLoadModal } from '../redux/actions/layoutActions'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useRef } from 'react'
+import {
+    onChangeModal,
+    onChangeModalPrimaryAction,
+    onChangeModalSecondaryAction,
+    onResetModal,
+} from '../redux/actions/layoutActions'
+import { useDispatch } from 'react-redux'
 
 /**
  *
- * @returns {{secondary: {current: (function(*): *), change: (function(*=, *=): {payload: {}, type: string}), setTitle: (function(*=, *=): {payload: {}, type: string}), unloading: (function(*=): {payload: {}, type: string}), loading: (function(*=, *=): {payload: {}, type: string})}, load: (function(*=): {payload: {secondaryActions: *[], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}), change: (function(*=): {payload: {}, type: string}), setTitle: (function(*=): {payload: {}, type: string}), unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string}), close: (function(): {payload: {secondaryActions: *[], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}), primary: {current, change: (function(*=): {payload: {}, type: string}), setTitle: (function(*=): {payload: {}, type: string}), unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string})}}}
+ * @returns {{secondary: {change: (function(*=, *=): {payload: {}, type: *}), setTitle: (function(*=, *=): {payload: {}, type: *}), unloading: (function(*=): {payload: {}, type: string}), loading: (function(*=, *=): {payload: {}, type: *})}, setContent: (function(*=): {payload: {}, type: string}), change: (function(*=): {payload: {}, type: string}), setTitle: (function(*=): {payload: {}, type: string}), unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string}), close: (function(): {payload: {}, type: string}), primary: {change: (function(*=): {payload: {}, type: string}), setTitle: (function(*=): {payload: {}, type: string}), unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string})}}}
  */
 export function useModal() {
     const dispatch = useDispatch()
-    const modal = useSelector(state => state.layout.modal)
-    const settings = useRef({})
-
-    useEffect(() => {
-        settings.current = modal
-    }, [modal])
 
     /**
      *
-     * @returns {{payload: {secondaryActions: *[], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}}
+     * @returns {{payload: {}, type: string}}
      */
-    const close = () => dispatch(onLoadModal())
-
-    /**
-     *
-     * @param params
-     * @returns {{payload: {secondaryActions: *[], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}}
-     */
-    const load = (params = {}) => dispatch(onLoadModal({
-        open: true,
-        title: 'title',
-        content: 'content',
-        secondaryActions: [{
-            content: 'Close',
-            onAction: close,
-        }],
-        ...params,
-    }))
+    const close = () => dispatch(onResetModal())
 
     /**
      *
@@ -75,7 +57,7 @@ export function useModal() {
      * @param value
      * @returns {{payload: {}, type: string}}
      */
-    const primaryChange = (value = {}) => change({ primaryAction: { ...settings.current.primaryAction, ...value } })
+    const primaryChange = (value = {}) => dispatch(onChangeModalPrimaryAction(value))
 
     /**
      *
@@ -99,13 +81,11 @@ export function useModal() {
 
     /**
      *
-     * @param buttonIndex
+     * @param index
      * @param value
+     * @returns {{payload: {}, type: *}}
      */
-    const secondaryChange = (buttonIndex = 1, value = {}) => change(({
-        secondaryActions: settings.current.secondaryActions.map(
-            (i, index) => index === buttonIndex - 1 ? { ...i, ...value } : { ...i }),
-    }))
+    const secondaryChange = (index = 1, value = {}) => dispatch(onChangeModalSecondaryAction({ index, value }))
 
     /**
      *
@@ -130,9 +110,7 @@ export function useModal() {
      */
     const secondaryUnloading = i => secondaryLoading(i, false)
 
-
     return {
-        load,
         change,
         close,
         loading,
@@ -140,14 +118,12 @@ export function useModal() {
         setTitle,
         setContent,
         primary: {
-            current: settings.current.primaryAction,
             change: primaryChange,
             setTitle: primaryChangeTitle,
             loading: primaryLoading,
             unloading: primaryUnloading,
         },
         secondary: {
-            current: i => settings.current.secondaryActions[i - 1],
             change: secondaryChange,
             setTitle: secondaryChangeTitle,
             loading: secondaryLoading,

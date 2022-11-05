@@ -2,11 +2,10 @@ import React, { useState, useCallback } from 'react'
 import { TopBar, ActionList } from '@shopify/polaris'
 
 
-export const TopBarMarkup = () => {
+export const TopBarMarkup = ({toggleMobileNavigationActive}) => {
     const [userMenuActive, setUserMenuActive] = useState(false)
     const [searchActive, setSearchActive] = useState(false)
     const [searchValue, setSearchValue] = useState('')
-    const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
 
     const toggleUserMenuActive = useCallback(
         () => setUserMenuActive((userMenuActive) => !userMenuActive),
@@ -51,15 +50,6 @@ export const TopBarMarkup = () => {
             onToggle={toggleUserMenuActive}
         />
     )
-
-    const toggleMobileNavigationActive = useCallback(
-        () =>
-            setMobileNavigationActive(
-                (mobileNavigationActive) => !mobileNavigationActive,
-            ),
-        [],
-    )
-
 
     return <TopBar
         showNavigationToggle

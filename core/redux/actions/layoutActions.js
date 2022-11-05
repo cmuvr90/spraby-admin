@@ -3,8 +3,9 @@ import React from 'react'
 export const ON_CHANGE_LOADING = 'ON_CHANGE_LOADING'
 export const ON_CHANGE_MESSAGE = 'ON_CHANGE_MESSAGE'
 
-export const ON_LOAD_MODAL = 'ON_LOAD_MODAL'
 export const ON_CHANGE_MODAL = 'ON_CHANGE_MODAL'
+export const ON_CHANGE_MODAL_PRIMARY_ACTION = 'ON_CHANGE_MODAL_PRIMARY_ACTION'
+export const ON_CHANGE_MODAL_SECONDARY_ACTION = 'ON_CHANGE_MODAL_SECONDARY_ACTION'
 
 export const ON_CHANGE_TOP_BAR = 'ON_CHANGE_TOP_BAR'
 export const ON_CHANGE_TOP_BAR_PRIMARY_ACTION = 'ON_CHANGE_TOP_BAR_PRIMARY_ACTION'
@@ -39,21 +40,25 @@ export const onChangeMessage = (message = null, error = false, duration = 3000) 
 /**
  *
  * @param params
- * @returns {{payload: {secondaryActions: [], onClose: payload.onClose, primaryAction: null, large: boolean, title: null, loading: boolean, open: boolean, content: null}, type: string}}
+ * @returns {{payload: {}, type: string}}
  */
-export const onLoadModal = (params = {}) => ({
-    type: ON_LOAD_MODAL,
-    payload: {
-        large: false,
-        open: false,
-        title: null,
-        content: null,
-        primaryAction: null,
-        secondaryActions: [],
-        loading: false,
-        onClose: () => {},
-        ...params,
-    },
+export const onChangeModal = (params = {}) => ({
+    type: ON_CHANGE_MODAL,
+    payload: { ...params },
+})
+
+/**
+ *
+ * @returns {{payload: {}, type: string}}
+ */
+export const onResetModal = () => onChangeModal({
+    large: false,
+    open: false,
+    title: null,
+    content: null,
+    primaryAction: null,
+    secondaryActions: [],
+    loading: false,
 })
 
 /**
@@ -61,8 +66,18 @@ export const onLoadModal = (params = {}) => ({
  * @param params
  * @returns {{payload: {}, type: string}}
  */
-export const onChangeModal = (params = {}) => ({
-    type: ON_CHANGE_MODAL,
+export const onChangeModalPrimaryAction = (params = {}) => ({
+    type: ON_CHANGE_MODAL_PRIMARY_ACTION,
+    payload: { ...params },
+})
+
+/**
+ *
+ * @param params
+ * @returns {{payload: {}, type: *}}
+ */
+export const onChangeModalSecondaryAction = (params = {}) => ({
+    type: ON_CHANGE_MODAL_SECONDARY_ACTION,
     payload: { ...params },
 })
 
@@ -89,7 +104,7 @@ export const onResetTopBar = () => onChangeTopBar({
     fullWidth: true,
     contextControl: null,
     secondaryMenu: null,
-});
+})
 
 /**
  *

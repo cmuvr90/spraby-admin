@@ -1,15 +1,9 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Frame,
-    ContextualSaveBar,
-    Loading,
-    Toast,
-    Modal,
-} from '@shopify/polaris'
+import { Frame, ContextualSaveBar, Loading, Toast, Modal } from '@shopify/polaris'
 import { TopBarMarkup } from '../../components/TopBarMarkup'
 import { NavigationMarkup } from '../../components/NavigationMarkup'
-import { onChangeMessage, onLoadModal } from '../redux/actions/layoutActions'
+import { onChangeMessage, onResetModal } from '../redux/actions/layoutActions'
 
 /**
  *
@@ -24,16 +18,38 @@ export const MainLayout = Template => props => {
     const modal = useSelector(state => state.layout.modal)
     const topBar = useSelector(state => state.layout.topBar)
 
+    const logo = {
+        width: 124,
+        topBarSource: 'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999',
+        contextualSaveBarSource: 'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
+        url: 'http://jadedpixel.com',
+        accessibilityLabel: 'Jaded Pixel',
+    }
+
+    const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
+
+    /**
+     *
+     * @type {JSX.Element|null}
+     */
     const loadingMarkup = loading ? <Loading /> : null
 
-    const toastMarkup = useMemo(() => message ? message.content.map(i =>
+    /**
+     *
+     * @type {*|null}
+     */
+    const toastMarkup = message ? message.content.map(i =>
         <Toast key={i} {...message} content={i} onDismiss={() => dispatch(onChangeMessage())} />,
-    ) : null, [message])
+    ) : null
 
+    /**
+     *
+     * @type {JSX.Element}
+     */
     const modalMarkup = <Modal
         large={modal.large}
         open={modal.open}
-        onClose={() => dispatch(onLoadModal())}
+        onClose={() => dispatch(onResetModal())}
         title={modal.title}
         primaryAction={modal.primaryAction}
         secondaryActions={modal.secondaryActions}
@@ -42,6 +58,10 @@ export const MainLayout = Template => props => {
         <Modal.Section>{modal.content}</Modal.Section>
     </Modal>
 
+    /**
+     *
+     * @type {JSX.Element|null}
+     */
     const contextualSaveBarMarkup = topBar.active ? <ContextualSaveBar
         message={topBar.title}
         saveAction={topBar.saveAction}
@@ -52,25 +72,18 @@ export const MainLayout = Template => props => {
         secondaryMenu={topBar.secondaryMenu}
     /> : null
 
-    const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
-    const skipToContentRef = useRef(null)
-    const toggleMobileNavigationActive = useCallback(() => setMobileNavigationActive((mobileNavigationActive) => !mobileNavigationActive), [])
-
-    const logo = {
-        width: 124,
-        topBarSource: 'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999',
-        contextualSaveBarSource: 'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
-        url: 'http://jadedpixel.com',
-        accessibilityLabel: 'Jaded Pixel',
-    }
+    /**
+     *
+     * @type {function(): void}
+     */
+    const toggleMobileNavigationActive = useCallback(() => setMobileNavigationActive(v => !v), [])
 
     return <Frame
         logo={logo}
-        topBar={<TopBarMarkup />}
+        topBar={<TopBarMarkup toggleMobileNavigationActive={toggleMobileNavigationActive} />}
         navigation={<NavigationMarkup />}
         showMobileNavigation={mobileNavigationActive}
         onNavigationDismiss={toggleMobileNavigationActive}
-        skipToContentTarget={skipToContentRef.current}
     >
         {contextualSaveBarMarkup}
         {loadingMarkup}
