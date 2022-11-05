@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { useTopBar } from './useTopbar'
 
 /**
  *
  * @param onSave
  * @param onDiscard
- * @returns {{active: (function(*=): {payload: {discardAction: null, fullWidth: boolean, saveAction: null, secondaryMenu: null, active: boolean, alignContentFlush: boolean, title: null, contextControl: null}, type: string})}}
+ * @returns {{active: (function(*=): {payload: {}, type: string})}}
  */
 export function useSaveBar(onSave, onDiscard) {
 
+    /**
+     *
+     * @type {{secondary: {unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string})}, current: *, active: (function(*=): {payload: {}, type: string}), reset: (function(): {payload: {}, type: string}), primary: {unloading: (function(): {payload: {}, type: string}), loading: (function(*=): {payload: {}, type: string})}}}
+     */
     const topBar = useTopBar(
         {
             content: 'Save',
@@ -19,10 +23,6 @@ export function useSaveBar(onSave, onDiscard) {
             onAction: onDiscardAction,
         },
     )
-
-    useEffect(() => {
-        topBar.load({ open: false })
-    }, [])
 
     /**
      *
@@ -45,6 +45,6 @@ export function useSaveBar(onSave, onDiscard) {
     }
 
     return {
-        active: topBar.open,
+        active: topBar.active,
     }
 }

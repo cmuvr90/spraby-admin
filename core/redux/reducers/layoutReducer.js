@@ -3,7 +3,9 @@ import {
     ON_MESSAGE,
     ON_CHANGE_MODAL,
     ON_LOAD_MODAL,
-    ON_TOP_BAR,
+    ON_CHANGE_TOP_BAR,
+    ON_CHANGE_TOP_BAR_PRIMARY_ACTION,
+    ON_CHANGE_TOP_BAR_SECONDARY_ACTION,
 } from '../actions/layoutActions'
 
 /**
@@ -21,7 +23,7 @@ const initialState = {
  *
  * @param state
  * @param action
- * @returns {({loading: boolean, message: null, topBar: {}, modal: {}}&{message: *})|{loading: boolean, message: null, topBar: {}, modal: {}}|({loading: boolean, message: null, topBar: {}, modal: {}}&{loading: *})|({loading: boolean, message: null, topBar: {}, modal: {}}&{modal: *})|({loading: boolean, message: null, topBar: {}, modal: {}}&{topBar: *})}
+ * @returns {{loading: boolean, message: null, topBar: {}, modal: {}}|{loading: boolean, message: null, topBar, modal: {}}|{loading: boolean, message, topBar: {}, modal: {}}|{loading, message: null, topBar: {}, modal: {}}|{loading: boolean, message: null, topBar: {}, modal}}
  */
 export const layoutReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -33,8 +35,30 @@ export const layoutReducer = (state = initialState, action) => {
             return { ...state, modal: { ...action.payload } }
         case ON_CHANGE_MODAL:
             return { ...state, modal: { ...state.modal, ...action.payload } }
-        case ON_TOP_BAR:
-            return { ...state, topBar: action.payload }
+        case ON_CHANGE_TOP_BAR:
+            return { ...state, topBar: { ...state.topBar, ...action.payload } }
+        case ON_CHANGE_TOP_BAR_PRIMARY_ACTION:
+            return {
+                ...state,
+                topBar: {
+                    ...state.topBar,
+                    saveAction: {
+                        ...state.topBar.saveAction,
+                        ...action.payload,
+                    },
+                },
+            }
+        case ON_CHANGE_TOP_BAR_SECONDARY_ACTION:
+            return {
+                ...state,
+                topBar: {
+                    ...state.topBar,
+                    discardAction: {
+                        ...state.topBar.discardAction,
+                        ...action.payload,
+                    },
+                },
+            }
         default:
             return state
     }

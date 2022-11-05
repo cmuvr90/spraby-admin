@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Page, Layout, Card, Button, Stack, FormLayout, TextField } from '@shopify/polaris'
-import { useModal, useLoading, useMessage } from '../../hooks'
+import { useModal, useLoading, useMessage, useSaveBar } from '../../hooks'
 
 export const HomePage = () => {
     const modal = useModal()
     const loading = useLoading()
     const message = useMessage()
+
+    const saveBar = useSaveBar(
+        () => new Promise(resolve => setTimeout(resolve, 1000)),
+        () => new Promise(resolve => setTimeout(resolve, 1000)),
+    )
 
     const [modalData, setModalData] = useState({ name: '', email: '' })
 
@@ -108,6 +113,7 @@ export const HomePage = () => {
                 <Card sectioned>
                     <Stack>
                         <Button onClick={() => {
+                            saveBar.active(true)
                         }}
                         >Info</Button>
                     </Stack>

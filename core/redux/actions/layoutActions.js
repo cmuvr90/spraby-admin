@@ -2,9 +2,13 @@ import React from 'react'
 
 export const ON_LOADING = 'ON_LOADING'
 export const ON_MESSAGE = 'ON_MESSAGE'
+
 export const ON_LOAD_MODAL = 'ON_LOAD_MODAL'
 export const ON_CHANGE_MODAL = 'ON_CHANGE_MODAL'
-export const ON_TOP_BAR = 'ON_TOP_BAR'
+
+export const ON_CHANGE_TOP_BAR = 'ON_CHANGE_TOP_BAR'
+export const ON_CHANGE_TOP_BAR_PRIMARY_ACTION = 'ON_CHANGE_TOP_BAR_PRIMARY_ACTION'
+export const ON_CHANGE_TOP_BAR_SECONDARY_ACTION = 'ON_CHANGE_TOP_BAR_SECONDARY_ACTION'
 
 /**
  *
@@ -65,19 +69,44 @@ export const onChangeModal = (params = {}) => ({
 /**
  *
  * @param params
- * @returns {{payload: {discardAction: null, fullWidth: boolean, saveAction: null, secondaryMenu: null, active: boolean, alignContentFlush: boolean, title: null, contextControl: null}, type: string}}
+ * @returns {{payload: {}, type: string}}
  */
-export const onTopBar = (params = {}) => ({
-    type: ON_TOP_BAR,
-    payload: {
-        active: false,
-        title: null,
-        saveAction: null,
-        discardAction: null,
-        alignContentFlush: false,
-        fullWidth: true,
-        contextControl: null,
-        secondaryMenu: null,
-        ...params,
-    },
+export const onChangeTopBar = (params = {}) => ({
+    type: ON_CHANGE_TOP_BAR,
+    payload: { ...params },
+})
+
+/**
+ *
+ * @returns {{payload: {}, type: string}}
+ */
+export const onResetTopBar = () => onChangeTopBar({
+    active: false,
+    title: null,
+    saveAction: null,
+    discardAction: null,
+    alignContentFlush: false,
+    fullWidth: true,
+    contextControl: null,
+    secondaryMenu: null,
+});
+
+/**
+ *
+ * @param params
+ * @returns {{payload: {}, type: string}}
+ */
+export const onChangeTopBarPrimaryAction = (params = {}) => ({
+    type: ON_CHANGE_TOP_BAR_PRIMARY_ACTION,
+    payload: { ...params },
+})
+
+/**
+ *
+ * @param params
+ * @returns {{payload: {}, type: string}}
+ */
+export const onChangeTopBarSecondayAction = (params = {}) => ({
+    type: ON_CHANGE_TOP_BAR_SECONDARY_ACTION,
+    payload: { ...params },
 })
