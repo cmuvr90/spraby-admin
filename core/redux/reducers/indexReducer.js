@@ -1,5 +1,8 @@
 
 const initialState = {
+  api: {
+    url: process.env['API_HOST']
+  }
 };
 
 export const indexReducer = (state = initialState, action) => {

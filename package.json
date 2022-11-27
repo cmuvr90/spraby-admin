@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev -p $(grep PORT .env | cut -d '=' -f2) -H $(grep HOST .env | cut -d '=' -f2)",
+    "dev": "next dev -p $(grep -w PORT .env | cut -d '=' -f2) -H $(grep -w HOST .env | cut -d '=' -f2)",
     "build": "next build",
     "start": "next start",
     "lint": "eslint -c .eslintrc.json",

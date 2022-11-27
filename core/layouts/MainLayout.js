@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Frame, ContextualSaveBar, Loading, Toast, Modal } from '@shopify/polaris'
 import { TopBarMarkup } from '../../components/TopBarMarkup'
-import { NavigationMarkup } from '../../components/NavigationMarkup'
 import { onChangeMessage, onResetModal } from '../redux/actions/layoutActions'
+import { AdminMenu } from '../menu/admin'
 
 /**
  *
@@ -81,7 +81,7 @@ export const MainLayout = Template => props => {
     return <Frame
         logo={logo}
         topBar={<TopBarMarkup toggleMobileNavigationActive={toggleMobileNavigationActive} />}
-        navigation={<NavigationMarkup />}
+        navigation={<AdminMenu />}
         showMobileNavigation={mobileNavigationActive}
         onNavigationDismiss={toggleMobileNavigationActive}
     >
